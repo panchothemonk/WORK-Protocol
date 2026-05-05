@@ -1,23 +1,38 @@
 version: "3.9"
 
 services:
-  postgres:
+  db:
     image: postgres:16-alpine
-    container_name: workprotocol-postgres
+    container_name: workprotocol-db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: workprotocol
-      POSTGRES_USER: workprotocol
-      POSTGRES_PASSWORD: workprotocol
+      POSTGRES_DB: ${POSTGRES_DB:-workprotocol}
+      POSTGRES_USER: ${POSTGRES_USER:-workprotocol}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-workprotocol}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U workprotocol -d workprotocol"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-workprotocol} -d ${POSTGRES_DB:-workprotocol}"]
       interval: 5s
       timeout: 5s
       retries: 5
+
+  api:
+    image: node:20-alpine
+    container_name: workprotocol-api
+    working_dir: /app
+    command: ["echo", "API placeholder — coming soon"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-workprotocol}:${POSTGRES_PASSWORD:-workprotocol}@db:5432/${POSTGRES_DB:-workprotocol}
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
 
 volumes:
   pgdata:

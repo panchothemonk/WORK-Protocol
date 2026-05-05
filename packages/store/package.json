@@ -1,0 +1,44 @@
+{
+  "name": "@workprotocol/store",
+  "version": "4.0.0",
+  "description": "WORK Protocol v4 — PostgreSQL persistence layer",
+  "type": "module",
+  "main": "./src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./db": "./src/db.mjs",
+    "./payments": "./src/payments.mjs",
+    "./receipts": "./src/receipts.mjs",
+    "./delegations": "./src/delegations.mjs",
+    "./reputation": "./src/reputation.mjs",
+    "./webhooks": "./src/webhooks.mjs",
+    "./signing": "./src/signing.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/",
+    "test:payments": "node --test tests/payments.test.mjs",
+    "test:receipts": "node --test tests/receipts.test.mjs",
+    "test:delegations": "node --test tests/delegations.test.mjs",
+    "test:reputation": "node --test tests/reputation.test.mjs",
+    "test:webhooks": "node --test tests/webhooks.test.mjs",
+    "test:signing": "node --test tests/signing.test.mjs",
+    "lint": "eslint src/ tests/",
+    "clean": "rm -rf node_modules"
+  },
+  "keywords": [
+    "workprotocol",
+    "ai",
+    "agents",
+    "payments",
+    "usdc",
+    "database",
+    "postgresql"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "pg": "^8.20.0"
+  }
+}
