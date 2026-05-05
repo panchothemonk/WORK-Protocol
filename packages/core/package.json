@@ -39,7 +39,10 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@coinbase/x402": "^2.1.0",
     "@noble/ed25519": "^2.1.0",
-    "@noble/hashes": "^2.0.0"
+    "@noble/hashes": "^2.0.0",
+    "@x402/core": "^2.11.0",
+    "viem": "^2.48.8"
   }
 }
