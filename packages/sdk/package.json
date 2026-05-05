@@ -1,0 +1,14 @@
+{
+  "name": "@workprotocol/sdk",
+  "version": "4.0.0",
+  "type": "module",
+  "main": "./src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./worker": "./src/worker.mjs",
+    "./buyer": "./src/buyer.mjs"
+  },
+  "dependencies": {
+    "@workprotocol/core": "workspace:*"
+  }
+}

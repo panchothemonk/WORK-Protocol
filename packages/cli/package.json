@@ -1,0 +1,9 @@
+{
+  "name": "@workprotocol/cli",
+  "version": "4.0.0",
+  "type": "module",
+  "bin": { "work": "./src/index.mjs" },
+  "dependencies": {
+    "@workprotocol/sdk": "workspace:*"
+  }
+}
