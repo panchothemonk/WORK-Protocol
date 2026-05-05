@@ -15,7 +15,8 @@
     "./jobs": "./src/jobs.mjs",
     "./reputation": "./src/reputation.mjs",
     "./saga": "./src/saga.mjs",
-    "./helpers": "./src/helpers.mjs"
+    "./helpers": "./src/helpers.mjs",
+    "./wallets": "./src/wallets.mjs"
   },
   "scripts": {
     "test": "node --test tests/",
