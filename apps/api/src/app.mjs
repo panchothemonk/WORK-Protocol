@@ -71,6 +71,7 @@ export async function app(ctx) {
     res.end(JSON.stringify(result.body || result));
 
   } catch (err) {
+    console.error('[APP ERROR]', err.message, err.stack);
     errorMiddleware(ctx, err);
   }
 }

@@ -46,6 +46,7 @@ export const routes = [
       const job = await createJob({
         store,
         paymentAuthId: ctx.body.paymentAuthId,
+        workerId: ctx.body.workerId,
         input: ctx.body.input,
       });
       return { status: 201, body: job };

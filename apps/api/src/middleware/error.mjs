@@ -1,6 +1,7 @@
 // Middleware: Production-safe error handler
 export function errorMiddleware(ctx, err) {
-  console.error(`[ERROR] ${ctx.req.method} ${ctx.pathname}:`, err.message);
+  console.error(`[ERROR] ${ctx.req.method} ${ctx.pathname}:`, err);
+  console.error(err.stack);
 
   if (err.message.startsWith('SERVICE_NOT_FOUND') || err.message.startsWith('WORKER_')) {
     ctx.res.writeHead(404);

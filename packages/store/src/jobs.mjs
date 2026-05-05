@@ -15,15 +15,15 @@ export async function createJob(pool, job) {
      RETURNING *`,
     [
       job.id,
-      job.workerId,
-      job.buyerId || null,
-      job.serviceId || null,
-      job.paymentAuthId || null,
-      job.inputHash,
+      job.worker_id || job.workerId || null,
+      job.buyer_id || job.buyerId || null,
+      job.service_id || job.serviceId || null,
+      job.payment_auth_id || job.paymentAuthId || null,
+      job.input_hash || job.inputHash,
       job.status || 'created',
       job.model || null,
-      job.modelProvider || null,
-      job.timeoutAt || null,
+      job.model_provider || job.modelProvider || null,
+      job.timeout_at || job.timeoutAt || null,
     ]
   );
   return rows[0] || null;

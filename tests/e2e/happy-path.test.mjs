@@ -81,6 +81,7 @@ describe('WORK Protocol v4 — Happy Path E2E', () => {
   it('create job', async () => {
     job = await api('POST', '/api/v1/jobs', {
       paymentAuthId: paymentAuth.id,
+      workerId,
       input: { task: 'Review PR #42 for SQL injection' },
     });
     assert.ok(job.id.startsWith('job_'));

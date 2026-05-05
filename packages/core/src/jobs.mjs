@@ -128,7 +128,7 @@ export async function authorizePayment({ store, paymentClient, challenge, signat
  * @param {number} [params.timeoutMs] - default 1 hour
  * @returns {Promise<object>} created job
  */
-export async function createJob({ store, paymentAuthId, input, model, modelProvider, timeoutMs = 3600_000 }) {
+export async function createJob({ store, paymentAuthId, workerId, input, model, modelProvider, timeoutMs = 3600_000 }) {
   const pa = await store.payments.getPaymentAuth(paymentAuthId);
   if (!pa) throw new Error('PAYMENT_AUTH_NOT_FOUND');
   if (pa.status !== 'secured') throw new Error('PAYMENT_NOT_SECURED');
@@ -139,7 +139,7 @@ export async function createJob({ store, paymentAuthId, input, model, modelProvi
 
   const job = await store.jobs.createJob({
     id: jobId,
-    worker_id: null, // assigned on accept
+    worker_id: workerId || 'wrk_placeholder',
     buyer_id: null,
     service_id: null,
     payment_auth_id: paymentAuthId,
