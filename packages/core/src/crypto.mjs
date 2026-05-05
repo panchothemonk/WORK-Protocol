@@ -6,6 +6,15 @@
 import * as ed from '@noble/ed25519';
 import crypto from 'node:crypto';
 
+// Inject synchronous SHA-512 for noble-ed25519 sync methods using node:crypto
+ed.etc.sha512Sync = (...msgs) => {
+  const hash = crypto.createHash('sha512');
+  for (const msg of msgs) {
+    hash.update(msg instanceof Uint8Array ? msg : Buffer.from(msg));
+  }
+  return new Uint8Array(hash.digest());
+};
+
 /**
  * Generate a fresh Ed25519 keypair.
  * @returns {{ publicKey: string, privateKey: string }} hex-encoded keys
@@ -14,8 +23,8 @@ export function generateKeyPair() {
   const privateKey = ed.utils.randomPrivateKey();
   const publicKey = ed.getPublicKey(privateKey);
   return {
-    publicKey: ed.utils.bytesToHex(publicKey),
-    privateKey: ed.utils.bytesToHex(privateKey),
+    publicKey: Buffer.from(publicKey).toString('hex'),
+    privateKey: Buffer.from(privateKey).toString('hex'),
   };
 }
 
@@ -62,8 +71,8 @@ export function canonicalize(obj) {
  */
 export function verifySignature(publicKeyHex, message, signatureHex) {
   try {
-    const publicKey = ed.utils.hexToBytes(publicKeyHex);
-    const signature = ed.utils.hexToBytes(signatureHex);
+    const publicKey = Buffer.from(publicKeyHex, 'hex');
+    const signature = Buffer.from(signatureHex, 'hex');
     let messageBytes;
     if (typeof message === 'string') {
       messageBytes = new TextEncoder().encode(message);
@@ -76,4 +85,42 @@ export function verifySignature(publicKeyHex, message, signatureHex) {
   } catch {
     return false;
   }
+}
+
+// ---- Low-level hex utilities (for internal use by identity, receipt) ------
+
+/** Convert Uint8Array to hex string */
+export function bytesToHex(bytes) {
+  return Buffer.from(bytes).toString('hex');
+}
+
+/** Convert hex string to Uint8Array */
+export function hexToBytes(hex) {
+  return new Uint8Array(Buffer.from(hex, 'hex'));
+}
+
+/** Generate random hex string of given byte length */
+export function randomHex(byteLength) {
+  return crypto.randomBytes(byteLength).toString('hex');
+}
+
+/** Get Ed25519 public key from private key bytes */
+export function getPublicKey(privateKeyBytes) {
+  return ed.getPublicKey(privateKeyBytes);
+}
+
+/** Sign message bytes with Ed25519 private key bytes */
+export function sign(messageBytes, privateKeyBytes) {
+  return ed.sign(messageBytes, privateKeyBytes);
+}
+
+/** Verify Ed25519 signature (raw bytes API) */
+export function verify(signatureBytes, messageBytes, publicKeyBytes) {
+  return ed.verify(signatureBytes, messageBytes, publicKeyBytes);
+}
+
+/** Alias: generate keypair returning raw Uint8Arrays */
+export function generateKeypair() {
+  const privateKey = ed.utils.randomPrivateKey();
+  return { publicKey: ed.getPublicKey(privateKey), privateKey };
 }

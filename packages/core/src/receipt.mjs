@@ -2,7 +2,7 @@
  * WORK Protocol v4 — Receipt Engine
  * sign(), verify(), freeze(), anchor() for cryptographic receipts.
  */
-import { canonicalize } from './crypto.mjs';
+import { canonicalize, hexToBytes, bytesToHex } from './crypto.mjs';
 import * as ed from '@noble/ed25519';
 
 /**
@@ -22,9 +22,9 @@ export function sign(receipt, privateKeyHex) {
   }
 
   // Derive public key for signingKeyId
-  const privateKey = ed.utils.hexToBytes(privateKeyHex);
+  const privateKey = hexToBytes(privateKeyHex);
   const publicKey = ed.getPublicKey(privateKey);
-  const signingKeyId = ed.utils.bytesToHex(publicKey);
+  const signingKeyId = bytesToHex(publicKey);
 
   // Compute canonical hash excluding hash + signature + _frozen fields
   const cleanReceipt = {};
@@ -36,7 +36,7 @@ export function sign(receipt, privateKeyHex) {
   const hash = canonicalize(cleanReceipt);
 
   // Sign the hash bytes
-  const hashBytes = ed.utils.hexToBytes(hash);
+  const hashBytes = hexToBytes(hash);
   const signatureBytes = ed.sign(hashBytes, privateKey);
 
   // Attach hash + signature
@@ -79,9 +79,9 @@ export function verify(receipt, publicKeyHex) {
 
   // Verify Ed25519 signature
   try {
-    const publicKey = ed.utils.hexToBytes(publicKeyHex);
+    const publicKey = hexToBytes(publicKeyHex);
     const sigBytes = Buffer.from(receipt.signature.signatureBase64, 'base64');
-    const hashBytes = ed.utils.hexToBytes(receipt.receiptHash);
+    const hashBytes = hexToBytes(receipt.receiptHash);
     const isValid = ed.verify(sigBytes, hashBytes, publicKey);
     if (!isValid) {
       return { valid: false, reason: 'signature_invalid' };

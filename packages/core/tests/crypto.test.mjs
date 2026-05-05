@@ -17,10 +17,10 @@ describe('generateKeyPair', () => {
     assert.equal(privateKey.length, 64);
 
     // Verify the private key derives the same public key
-    const pubBytes = ed.utils.hexToBytes(publicKey);
-    const privBytes = ed.utils.hexToBytes(privateKey);
+    const pubBytes = Buffer.from(publicKey, 'hex');
+    const privBytes = Buffer.from(privateKey, 'hex');
     const derivedPub = ed.getPublicKey(privBytes);
-    assert.deepEqual(derivedPub, pubBytes);
+    assert.deepEqual(Buffer.from(derivedPub).toString('hex'), publicKey);
   });
 
   it('generates unique keys on each call', () => {
@@ -101,10 +101,10 @@ describe('verifySignature', () => {
     const message = 'WORK Protocol v4 receipt payload';
 
     // Sign using noble
-    const privBytes = ed.utils.hexToBytes(privateKey);
+    const privBytes = Buffer.from(privateKey, "hex");
     const msgBytes = new TextEncoder().encode(message);
     const signature = ed.sign(msgBytes, privBytes);
-    const sigHex = ed.utils.bytesToHex(signature);
+    const sigHex = Buffer.from(signature).toString('hex');
 
     // Verify via our wrapper
     const result = verifySignature(publicKey, message, sigHex);
@@ -122,9 +122,9 @@ describe('verifySignature', () => {
     const { publicKey: pubB } = generateKeyPair();
 
     const msgBytes = new TextEncoder().encode('test');
-    const privBytes = ed.utils.hexToBytes(privA);
+    const privBytes = Buffer.from(privA, 'hex');
     const signature = ed.sign(msgBytes, privBytes);
-    const sigHex = ed.utils.bytesToHex(signature);
+    const sigHex = Buffer.from(signature).toString('hex');
 
     // Verify with wrong public key
     const result = verifySignature(pubB, 'test', sigHex);
@@ -135,9 +135,9 @@ describe('verifySignature', () => {
     const { publicKey, privateKey } = generateKeyPair();
     const message = new Uint8Array([1, 2, 3, 4]);
 
-    const privBytes = ed.utils.hexToBytes(privateKey);
+    const privBytes = Buffer.from(privateKey, "hex");
     const signature = ed.sign(message, privBytes);
-    const sigHex = ed.utils.bytesToHex(signature);
+    const sigHex = Buffer.from(signature).toString('hex');
 
     const result = verifySignature(publicKey, message, sigHex);
     assert.equal(result, true);

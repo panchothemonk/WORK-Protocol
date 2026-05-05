@@ -12,7 +12,7 @@ import {
   keyPossessionProof,
   verifyKeyPossession,
 } from '../src/identity.mjs';
-import { bytesToHex, generateKeypair, sign, verify } from '../src/crypto.mjs';
+import { bytesToHex, hexToBytes, getPublicKey, generateKeypair, sign, verify } from '../src/crypto.mjs';
 
 // ---- Worker identity ------------------------------------------------------
 
@@ -41,11 +41,8 @@ describe('createWorkerIdentity', () => {
     assert.strictEqual(worker.privateKey.length, 64);
 
     // Verify that public key derives from private key
-    const { hexToBytes } = require_node_crypto();
     const derivedPub = bytesToHex(
-      (await import('../src/crypto.mjs')).getPublicKey(
-        hexToBytes(worker.privateKey),
-      ),
+      getPublicKey(hexToBytes(worker.privateKey)),
     );
     assert.strictEqual(worker.publicKey, derivedPub);
   });
@@ -212,10 +209,4 @@ describe('key possession challenge-response', () => {
   });
 });
 
-/**
- * Small helper — node 25 doesn't need require for crypto, but just in case.
- */
-function require_node_crypto() {
-  // We use the crypto module from esm via dynamic import
-  return { hexToBytes: (h) => Uint8Array.from(Buffer.from(h, 'hex')) };
-}
+
