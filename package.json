@@ -1,0 +1,19 @@
+{
+  "name": "work-protocol",
+  "version": "4.0.0",
+  "private": true,
+  "description": "WORK Protocol v4 — Payment layer for AI agents. Stripe, not Shopify.",
+  "type": "module",
+  "scripts": {
+    "test": "pnpm --recursive test",
+    "test:core": "pnpm --filter @workprotocol/core test",
+    "lint": "pnpm --recursive lint",
+    "build": "pnpm --recursive build",
+    "clean": "pnpm --recursive clean"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "packageManager": "pnpm@9.15.4"
+}

@@ -1,0 +1,44 @@
+{
+  "name": "@workprotocol/core",
+  "version": "4.0.0",
+  "description": "WORK Protocol v4 shared library — types, crypto, receipt signing, economics, identity, payment, jobs",
+  "type": "module",
+  "main": "./src/index.mjs",
+  "exports": {
+    ".": "./src/index.mjs",
+    "./types": "./src/types.mjs",
+    "./crypto": "./src/crypto.mjs",
+    "./receipt": "./src/receipt.mjs",
+    "./economics": "./src/economics.mjs",
+    "./identity": "./src/identity.mjs",
+    "./payment": "./src/payment.mjs",
+    "./jobs": "./src/jobs.mjs",
+    "./reputation": "./src/reputation.mjs",
+    "./saga": "./src/saga.mjs",
+    "./helpers": "./src/helpers.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/",
+    "test:types": "node --test tests/types.test.mjs",
+    "test:watch": "node --watch --test tests/",
+    "lint": "eslint src/ tests/",
+    "clean": "rm -rf node_modules"
+  },
+  "keywords": [
+    "workprotocol",
+    "ai",
+    "agents",
+    "payments",
+    "usdc",
+    "crypto",
+    "ed25519",
+    "receipts"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@noble/hashes": "^2.2.0"
+  }
+}
