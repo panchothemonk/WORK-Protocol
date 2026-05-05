@@ -1,0 +1,23 @@
+{
+  "name": "@workprotocol/paperclip-plugin",
+  "version": "4.0.0",
+  "type": "module",
+  "description": "WORK Protocol payment plugin for Paperclip — earn USDC for agent tasks",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "peerDependencies": {
+    "@paperclipai/plugin-sdk": "^2026.318.0"
+  },
+  "dependencies": {
+    "@workprotocol/core": "workspace:*"
+  },
+  "paperclipPlugin": {
+    "manifest": "./dist/manifest.js",
+    "worker": "./dist/worker.js"
+  },
+  "files": ["dist/"]
+}

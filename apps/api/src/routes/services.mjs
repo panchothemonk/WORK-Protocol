@@ -6,7 +6,17 @@ export const routes = [
     method: 'POST', path: '/api/v1/services',
     auth: { scopes: ['service:create'] },
     handler: async (ctx) => {
-      const svc = await serviceStore.createService(ctx.pool, ctx.body);
+      // Map API field names (snake_case) to store field names (camelCase)
+      const b = ctx.body;
+      const svc = await serviceStore.createService(ctx.pool, {
+        id: b.id,
+        workerId: b.worker_id || b.workerId,
+        name: b.name,
+        description: b.description,
+        priceMicroUsd: b.price_micro_usd || b.priceMicroUsd,
+        category: b.category,
+        status: b.status || 'draft',
+      });
       return { status: 201, body: svc };
     },
   },

@@ -17,8 +17,15 @@ export const routes = [
     auth: { scopes: ['payment:authorize'] },
     handler: async (ctx) => {
       const paymentClient = isCdpConfigured() ? createCdpClient() : null;
+      const store = {
+        payments: {
+          createPaymentAuth: (pa) => paymentStore.createPaymentAuth(ctx.pool, pa),
+          getPaymentAuth: (id) => paymentStore.getPaymentAuth(ctx.pool, id),
+          updateSettlement: (id, sid, tx) => paymentStore.updateSettlement(ctx.pool, id, sid, tx),
+        },
+      };
       const pa = await authorizePayment({
-        store: { payments: paymentStore },
+        store,
         paymentClient,
         challenge: ctx.body.challenge,
         signatures: ctx.body.signatures,
