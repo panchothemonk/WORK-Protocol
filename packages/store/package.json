@@ -7,6 +7,10 @@
   "exports": {
     ".": "./src/index.mjs",
     "./db": "./src/db.mjs",
+    "./workers": "./src/workers.mjs",
+    "./buyers": "./src/buyers.mjs",
+    "./services": "./src/services.mjs",
+    "./jobs": "./src/jobs.mjs",
     "./payments": "./src/payments.mjs",
     "./receipts": "./src/receipts.mjs",
     "./delegations": "./src/delegations.mjs",
